@@ -1,0 +1,26 @@
+@import "../../../styles.scss";
+.table td, .table th {
+    border-top: none;
+}
+
+.title{
+    font: 24px;
+    color: $dark-primary-color;
+    font-weight: 600;
+}
+
+.register-button{
+    padding: 110px 15px;
+    font-size: 50px;
+    border: none;
+    color: $text-primary-color;
+    background: $default-primary-color;
+}
+
+.register-button:hover{
+    background: $dark-primary-color;
+    -moz-transition: all 0.75s;
+    -o-transition: all 0.75s;
+    -webkit-transition: all 0.75s;
+    transition: all 0.75s; 
+}

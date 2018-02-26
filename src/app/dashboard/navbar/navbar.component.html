@@ -1,0 +1,94 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top dark-primary-color">
+    <div class="container-fluid">
+        <a class="navbar-brand" (click)="toggleCollapse()" routerLink="/home/index" routerLinkActive="active" >MON Infotech</a>
+        <button class="navbar-toggler"  (click)="toggleCollapse()" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse show" id="navbarCollapse" [class.show]="show">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" *ngIf="isLogged()">
+                    <a class="nav-link" (click)="toggleCollapse()" routerLink="/dashboard/index" routerLinkActive="active" >Dashboard</a>
+                </li>
+                <li class="nav-item dropdown" ngbDropdown  *ngIf="hasRole('ADMIN')">
+                    <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle >User</a>
+                    <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdown01">
+                        <!-- <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/user/add"><i class="fa fa-plus"></i> Add User</a> -->
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/user"><i class="fa fa-users"></i> User</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/roles"><i class="fa fa-user-md"></i> Role</a>
+                    </div>
+                </li>
+                
+                <li class="nav-item dropdown" ngbDropdown  *ngIf="hasRole('ADMIN')">
+                    <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle >Company</a>
+                    <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdown01">
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/user/add"><i class="fa fa-plus"></i> Add Company</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/userList"><i class="fa fa-th-list"></i> Company List</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/userList"><i class="fa fa-th-list"></i> Change Student Limit</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/userList"><i class="fa fa-th-list"></i> Buy SMS</a>
+                    </div>
+                </li>
+                
+                <li class="nav-item dropdown" ngbDropdown *ngIf="auth.authenticated">
+                    <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle >Class</a>
+                    <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdown01">
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/addClass/add"><i class="fa fa-plus"></i> Add Class</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/classList"><i class="fa fa-th-list"></i> Class List</a>
+                    </div>
+                </li>
+                
+                <li class="nav-item dropdown" ngbDropdown *ngIf="auth.authenticated">
+                    <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle >Student</a>
+                    <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdown01">
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/addStudent/add"><i class="fa fa-plus"></i> Add Student</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/studentList"><i class="fa fa-th-list"></i> Student List</a>
+                        <!-- <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/snackBar"><i class="fa fa-th-list"></i> snackBar</a> -->
+                    </div>
+                </li>
+                
+                <li class="nav-item dropdown" ngbDropdown *ngIf="auth.authenticated">
+                    <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle >SMS</a>
+                    <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdown01">
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/allStudent"><i class="fa fa-university"></i> ALL Student</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/classWise"><i class="fa fa-users"></i> Class Wise</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/absentSMS"><i class="fa fa-check"></i> Absent </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/resultSMS"><i class="fa fa-graduation-cap"></i> Result </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/manualSMS"><i class="fa fa-user"></i> Manual </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/smsBalance"><i class="fa fa-money"></i> Balance </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/smsHistory"><i class="fa fa-history"></i> History </a>
+                    </div>
+                </li>
+                
+                <li class="nav-item dropdown" ngbDropdown *ngIf="auth.authenticated">
+                    <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle >খুদেবার্তা</a>
+                    <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdown01">
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/allStudentBangla"><i class="fa fa-university"></i> সকল ছাত্র/ছাত্রী</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/classWiseBangla"><i class="fa fa-users"></i> ক্লাস অনুযায়ী</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/absentSMSBangla"><i class="fa fa-check"></i> অনুপুস্থিত </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/resultSMSBangla"><i class="fa fa-graduation-cap"></i> ফলাফল </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/manualSMSBangla"><i class="fa fa-user"></i> ম্যানুয়াল </a>
+                    </div>
+                </li>
+
+
+            </ul>
+        
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item dropdown" ngbDropdown placement="bottom-right" *ngIf="isLogged()">
+                    <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle >{{username}}</a>
+                    <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdown01">
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/changePassword"><i class="fa fa-unlock-alt"></i> Change Password</a>
+                        <a class="dropdown-item" routerLink (click)="logout()"> <i class="fa fa-sign-out"></i> Logout</a>
+                    </div>
+                </li>
+                <!-- <li class="nav-item dropdown" ngbDropdown *ngIf="!isLogged()">
+                    <a class="nav-link" (click)="toggleCollapse()" routerLink="/dashboard/login" routerLinkActive="active">Login</a>
+                </li> -->
+                
+                <!-- <li class="nav-item "  *ngIf="isLogged()">
+                    <a class="btn btn-outline-primary" routerLink (click)="logout()" >LOGOUT</a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</nav>
+      
