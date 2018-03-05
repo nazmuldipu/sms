@@ -18,6 +18,10 @@ export class StudentService {
         return this.datasource.sendRequest(RequestMethod.Get, this.serviceUrl+`/byClass/${classId}`, null , true, pageUrl);
     }
 
+    getStudentList(classId: number):Observable<Student[]>{
+        return this.datasource.sendRequest(RequestMethod.Get, this.serviceUrl+`/list/${classId}`, null , true, null);
+    }
+
     getStudent(studentId:number):Observable<Student>{
         return this.datasource.sendRequest(RequestMethod.Get, this.serviceUrl+`/${studentId}`, null, true, null);
     }

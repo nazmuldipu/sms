@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { SMSComponent } from './sms.component';
 import { AllStudentEngComponent } from './all-student-eng/all-student-eng.component';
@@ -43,6 +43,7 @@ const routing = RouterModule.forChild([
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     routing
   ],

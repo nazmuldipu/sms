@@ -133,8 +133,8 @@
           
           <div class="form-group mx-3 pb-3">
             <button type="button" class="btn btn-danger" (click)="clear()">Clear</button>
-            <button type="submit" class="btn" [ngClass]="edit?'btn-warning':'btn-primary'" >{{edit?'Update':'Save'}}</button>
-            <!-- <button type="submit" class="btn" [ngClass]="edit?'btn-warning':'btn-primary'" [disabled]="this.studentForm.invalid">{{edit?'Update':'Save'}}</button> -->
+            <!-- <button type="submit" class="btn" [ngClass]="edit?'btn-warning':'btn-primary'" >{{edit?'Update':'Save'}}</button> -->
+            <button type="submit" class="btn" [ngClass]="edit?'btn-warning':'btn-primary'" [disabled]="this.studentForm.invalid">{{edit?'Update':'Save'}}</button>
           </div>
         </form>
       </div>

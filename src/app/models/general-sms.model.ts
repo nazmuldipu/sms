@@ -1,6 +1,6 @@
 export class GeneralSMS {
     constructor(
-        public message: string,
-        public number: number
+        public message?: string,
+        public number?: number
       ) { }
 }
