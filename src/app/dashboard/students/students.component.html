@@ -1,0 +1,144 @@
+<div class="container mt-2">
+  <div class="row">
+    <div class="col-12" *ngIf="message.length>0">
+      <div class="alert alert-primary" role="alert">
+          {{message}}
+      </div>
+    </div>
+    <div class="col-12" *ngIf="errorMessage.length>0">
+      <div class="alert alert-warning" role="alert">
+          {{errorMessage}}
+      </div>
+    </div>
+    
+    <div class="col-12 col-md-7 raised">
+      <div class="form-group row mx-4"  *ngIf="hasRole('ADMIN')">
+        <label class="col-sm-2 col-form-label">Company</label>
+        <div class="col-sm-10">
+          <select class="form-control" #co  (change)="companyChanged(co.value)" [(ngModel)]="companyId">
+            <option *ngFor="let company of companyList" [value]="company.id">{{company.companyName}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row mx-4">
+        <label class="col-sm-2 col-form-label">Class</label>
+        <div class="col-sm-10">
+          <!-- <select class="form-control" name="classId" #class  (change)="classChanged(class.value)" formControlName="classId" [(ngModel)]="classId">
+              <option *ngFor="let class of classList" [value]="class.id">{{class.className}}</option>
+            </select> -->
+            <select class="form-control" name="classId" #cl  (change)="classChanged(cl.value)" [(ngModel)]="classId">
+              <option *ngFor="let class of classList" [value]="class.id">{{class.className}}</option>
+            </select>
+        </div>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>নাম</th>
+            <th>Phone</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of studentPage?.content">
+            <td>{{student.studentId}}</td>
+            <td>{{student.name}}</td>
+            <td>{{student.nameBangla}}</td>
+            <td>{{student.phone}}</td>
+            <td>
+              <button class="btn btn-warning btn-sm raised" 
+                  (click)="editStudent(student.id)">
+                  <i class="fa fa-pencil-square-o"></i> 
+              </button> 
+              <button class="btn btn-danger btn-sm raised" 
+                  (click)="deleteStudent(student.id)">
+                  <i class="fa fa-trash-o"></i> 
+              </button> 
+            </td>
+          </tr>
+          <tr *ngFor="let i of arr(10 - studentPage?.numberOfElements)" >
+              <td colspan="5">
+                  <a class="btn btn-sm">
+                      &nbsp;
+                  </a> 
+              </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">
+              <div aria-label="Page navigation example">
+                <ul class="pagination justify-content-end m-0">
+                  <li class="page-item" [ngClass]="{'disabled': studentPage?.first}" ><a class="page-link" [routerLink] (click)="getStudentPage(classId, 0)" > First </a></li>
+                  <li class="page-item" [ngClass]="{'disabled': studentPage?.number == 0}" ><a class="page-link" [routerLink] (click)="getStudentPage(classId, studentPage?.number-1)" > Previous </a></li>
+  
+                  <li class="page-item"><a class="page-link" > {{studentPage?.number+1}} / {{studentPage?.totalPages}} </a></li>
+  
+                  <li class="page-item" [ngClass]="{'disabled': studentPage?.last}"><a class="page-link" [routerLink] (click)="getStudentPage(classId, studentPage?.number+1)"> Next </a></li>
+                  <li class="page-item" [ngClass]="{'disabled': studentPage?.last}"><a class="page-link" [routerLink] (click)="getStudentPage(classId, studentPage?.totalPages-1)"> Last </a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+        
+      </table>
+    </div>
+
+
+    <div class="col-12 col-md-5">
+      <div class="raised">
+        <div class="text-center" [class.bg-warning]="edit">
+          <h3>{{edit?'Edit':'Add'}} Student</h3>
+        </div>
+        <form [formGroup]="studentForm" (ngSubmit)="saveStudent()" novalidate>
+
+          <div class="form-group row mx-3"  *ngIf="hasRole('ADMIN')">
+            <label>Company</label>
+            <select class="form-control" name="companyId"  #t  (change)="companyChanged(t.value)" formControlName="companyId" [(ngModel)]="companyId">
+              <option *ngFor="let company of companyList" [value]="company.id">{{company.companyName}}</option>
+            </select>
+          </div>
+
+          <div class="form-group row mx-3">
+            <label>Class Id</label>
+            <select class="form-control" name="classId" #class  (change)="classChanged(class.value)" formControlName="classId" [(ngModel)]="classId">
+              <option *ngFor="let class of classList" [value]="class.id">{{class.className}}</option>
+            </select>
+          </div>
+
+          <div class="form-group mx-3">
+            <label>Student Id</label>
+            <input type="number" class="form-control" placeholder="Student Id" [(ngModel)]="student.studentId" formControlName="studentId">
+            <small class="text-danger" *ngIf="studentForm.controls.studentId.errors && studentForm.controls.studentId.dirty">Student Id Required</small>
+          </div>
+          <div class="form-group mx-3">
+            <label>Student Name</label>
+            <input type="text" class="form-control" placeholder="Student Name" [(ngModel)]="student.name" formControlName="name" maxlength="12">
+            <small class="text-danger" *ngIf="studentForm.controls.name.errors?.required && studentForm.controls.name.dirty">Student name Required</small>
+          </div>
+          <div class="form-group mx-3">
+            <label>নাম</label>
+            <input type="text" class="form-control" placeholder="ছাত্রের নাম" [(ngModel)]="student.nameBangla" formControlName="nameBangla" maxlength="7">
+          </div>
+          <div class="form-group mx-3">
+            <label>Mobile</label>
+            <input type="text" class="form-control" placeholder="Phone" [(ngModel)]="student.phone" formControlName="phone">
+            <small class="text-danger" *ngIf="studentForm.controls.phone.errors?.required && studentForm.controls.phone.dirty ">Telephone Required</small>
+            <small class="text-danger" *ngIf="studentForm.controls.phone.errors?.pattern && studentForm.controls.phone.dirty && !studentForm.controls.phone.errors?.required">Invaild (use +8801882332428 pattern)</small>
+          </div>
+          
+          <div class="form-group mx-3 pb-3">
+            <button type="button" class="btn btn-danger" (click)="clear()">Clear</button>
+            <button type="submit" class="btn" [ngClass]="edit?'btn-warning':'btn-primary'" >{{edit?'Update':'Save'}}</button>
+            <!-- <button type="submit" class="btn" [ngClass]="edit?'btn-warning':'btn-primary'" [disabled]="this.studentForm.invalid">{{edit?'Update':'Save'}}</button> -->
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  

@@ -1,4 +1,5 @@
 import { Role } from './role.model';
+import { Company } from './company.model';
 
 export class User {
   constructor(
@@ -8,6 +9,6 @@ export class User {
     public password?: string,
     public active?: boolean,
     public roles?: Role[],
-    // public company?: Company,
+    public companyInfo?: Company,
     ) { }
 }

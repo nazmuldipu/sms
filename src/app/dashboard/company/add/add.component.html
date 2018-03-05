@@ -1,0 +1,35 @@
+<div class="container-fluid mt-2">
+  <div class="row m-0">
+    <div class="col-12">
+      <div class="alert alert-success" role="alert" *ngIf="message?.length>0">
+          <strong>{{message}}</strong>
+      </div>
+      <div class="alert alert-warning" role="alert" *ngIf="errMessage?.length>0">
+          <strong>{{errMessage}}</strong>
+      </div>
+    </div>
+    <div class="col-12 col-md-7 p-0">
+
+      <app-company-list 
+      [companyPage]="companyPage"
+      [listFor]=1
+      (onEdit)="onEdit($event)"
+      (onDelete)="onDelete($event)"
+      (onPage)="getCompanyPage($event)"
+        >
+        Company list loading..
+      </app-company-list>
+    </div>
+    
+    <div class="col-12 col-md-5 p-0 px-md-2 pt-2 pt-md-0">
+
+      <app-add-company
+      [company]="company"
+      (onCompany)="onCompany($event)"
+      >
+      add company component..        
+      </app-add-company>
+    </div>
+  </div>
+</div>
+  

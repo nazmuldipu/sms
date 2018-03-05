@@ -48,6 +48,7 @@ export class UserService {
     }
 
     saveUser(user: User){
+        console.log(user);
         if (user.id == 0 || user.id == null) {
             this.datasource.sendRequest(RequestMethod.Post, this.serviceUrl, user, true, null)
             .subscribe(
@@ -64,7 +65,7 @@ export class UserService {
             this.datasource.sendRequest(RequestMethod.Put, this.serviceUrl+`/${user.id}`, user, true, null)
             .subscribe(
                 data => {
-                    this.usersPage.content.splice(this.usersPage.content.findIndex(p => this.locator(p, user.id)), 1, user);
+                    this.usersPage.content.splice(this.usersPage.content.findIndex(p => this.locator(p, user.id)), 1, data);
                     this.message = 'User updated';
                 },
                 error => {

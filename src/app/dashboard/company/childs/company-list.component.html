@@ -1,0 +1,83 @@
+<div class="row m-0">
+    <!-- <div class="col-12">
+      <div class="alert alert-success" role="alert" *ngIf="message?.length>0">
+          <strong>{{message}}</strong>
+      </div>
+      <div class="alert alert-warning" role="alert" *ngIf="errMessage?.length>0">
+          <strong>{{errMessage}}</strong>
+      </div>
+    </div> -->
+    <!-- <div class="col-12 col-md-7 raised"> -->
+      <table class="table table-hover raised">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Contact</th>
+            <th>Telephone</th>
+            <th>MStd.</th>
+            <th>SMS Qo.</th>
+            <th>/Month</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let company of companyPage?.content">
+            <td>{{company.companyName}}</td>
+            <td>{{company.contactPerson}}</td>
+            <td>{{company.telephone}}</td>
+            <td>{{company.maximumNumberOfStudent}}</td>
+            <td>{{company.smsQuota}}</td>
+            <td>{{company.perMonthValue}}</td>
+            <td *ngIf="listFor==1">
+              <button class="btn btn-warning btn-sm raised" 
+                  (click)="editCompany(company.id)">
+                  <i class="fa fa-pencil-square-o"></i> 
+              </button> 
+              <button class="btn btn-danger btn-sm raised" 
+                  (click)="deleteCompany(company.id)">
+                  <i class="fa fa-trash-o"></i> 
+              </button> 
+            </td>
+            <td *ngIf="listFor==2">
+                <button class="btn btn-warning btn-sm raised" 
+                  (click)="getCompanyId(company.id)">
+                  Change
+                </button> 
+            </td>
+            <td *ngIf="listFor==3">
+                <button class="btn btn-warning btn-sm raised" 
+                  (click)="getCompanyId(company.id)">
+                  Buy
+                </button> 
+            </td>
+
+          </tr>
+          <tr *ngFor="let i of arr(10 - companyPage?.numberOfElements)" >
+              <td colspan="7">
+                  <a class="btn btn-sm">
+                      &nbsp;
+                  </a> 
+              </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td colspan="4">
+              <div aria-label="Page navigation example">
+                <ul class="pagination justify-content-end m-0">
+                  <li class="page-item" [ngClass]="{'disabled': companyPage?.first}" ><a class="page-link" [routerLink] (click)="getCompanyPage(0)" > First </a></li>
+                  <li class="page-item" [ngClass]="{'disabled': companyPage?.number == 0}" ><a class="page-link" [routerLink] (click)="getCompanyPage(companyPage?.number-1)" > Previous </a></li>
+  
+                  <li class="page-item"><a class="page-link" > {{companyPage?.number+1}} / {{companyPage?.totalPages}} </a></li>
+  
+                  <li class="page-item" [ngClass]="{'disabled': companyPage?.last}"><a class="page-link" [routerLink] (click)="getCompanyPage(companyPage?.number+1)"> Next </a></li>
+                  <li class="page-item" [ngClass]="{'disabled': companyPage?.last}"><a class="page-link" [routerLink] (click)="getCompanyPage(companyPage?.totalPages-1)"> Last </a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    <!-- </div> -->
+</div>

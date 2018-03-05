@@ -1,0 +1,63 @@
+<div class="raised">
+        <div class="text-center" [class.bg-warning]="edit">
+          <h3>{{edit?'Edit':'Add'}} Company</h3>
+        </div>
+        <form [formGroup]="companyForm" (ngSubmit)="saveCompany()" novalidate>
+          <div class="form-group mx-3">
+            <label class="sr-only">Company Name</label>
+            <input type="text" class="form-control" placeholder="Company Name" [(ngModel)]="company.companyName" formControlName="companyName">
+            <small class="text-danger" *ngIf="companyForm.controls['companyName'].errors && companyForm.controls.companyName.dirty">Company Name Required</small>
+          </div>
+          <div class="form-group mx-3">
+            <label class="sr-only">Company Name Bangla</label>
+            <input type="text" class="form-control" placeholder="Company Name Bangla" [(ngModel)]="company.companyNameBangla" formControlName="companyNameBangla">
+            <small class="text-danger" *ngIf="companyForm.controls.companyNameBangla.errors?.required && companyForm.controls.companyNameBangla.dirty ">Company Name Bangla Required</small>
+          </div>
+          <div class="form-group mx-3">
+            <label class="sr-only">Contact Person</label>
+            <input type="text" class="form-control" placeholder="Contact Person" [(ngModel)]="company.contactPerson" formControlName="contactPerson">
+            <small class="text-danger" *ngIf="companyForm.controls.contactPerson.errors?.required && companyForm.controls.contactPerson.dirty">ContactPerson Required</small>
+          </div>
+          <div class="form-group mx-3">
+            <label class="sr-only">Telephone</label>
+            <input type="text" class="form-control" placeholder="Telephone" [(ngModel)]="company.telephone" formControlName="telephone">
+            <small class="text-danger" *ngIf="companyForm.controls.telephone.errors?.required && companyForm.controls.telephone.dirty ">Telephone Required</small>
+            <small class="text-danger" *ngIf="companyForm.controls.telephone.errors?.pattern && companyForm.controls.telephone.dirty && !companyForm.controls.telephone.errors?.required">Invaild (use 01882332428 pattern)</small>
+          </div>
+          
+          
+          <div class="form-group mx-3">
+            <label class="sr-only">Address</label>
+            <input type="text" class="form-control" placeholder="companyAddress" [(ngModel)]="company.companyAddress" formControlName="companyAddress">
+          </div>
+          <div class="form-group mx-3">
+            <label class="sr-only">Web Address</label>
+            <input type="text" class="form-control" placeholder="Web Address" [(ngModel)]="company.webAddress" formControlName="webAddress">
+          </div>
+          <div class="form-group mx-3">
+            <label class="sr-only">Country</label>
+            <input type="text" class="form-control" placeholder="Country" [(ngModel)]="company.country" formControlName="country">
+          </div>
+          <div class="form-group mx-3">
+            <label class="sr-only">Maximum Number Of Student</label>
+            <input type="number" class="form-control" placeholder="Maximum Number Of Student" [(ngModel)]="company.maximumNumberOfStudent" formControlName="maximumNumberOfStudent">
+            <small class="text-danger" *ngIf="companyForm.controls.maximumNumberOfStudent.errors?.required && companyForm.controls.maximumNumberOfStudent.dirty">Maximum Number Of Student Required</small>
+          </div>
+          <div class="form-group mx-3">
+            <label class="sr-only">SMS Quota</label>
+            <input type="number" class="form-control" placeholder="SMS Quota" [(ngModel)]="company.smsQuota" formControlName="smsQuota">
+            <small class="text-danger" *ngIf="companyForm.controls.smsQuota.dirty && companyForm.controls.smsQuota.errors?.required ">SMS Quota Required</small>
+          </div>
+          <div class="form-group mx-3">
+            <label class="sr-only">Per month cost</label>
+            <input type="number" class="form-control" placeholder="Per month cost" [(ngModel)]="company.perMonthValue" formControlName="perMonthValue">
+            <small class="text-danger" *ngIf="companyForm.controls.perMonthValue.dirty && companyForm.controls.perMonthValue.errors?.required ">Per month cost Required</small>
+          </div>
+          
+          <div class="form-group mx-3 pb-3">
+            <button type="button" class="btn btn-outline-danger" (click)="clear()">Clear</button>
+            <button type="submit" class="btn" [ngClass]="edit?'btn-warning':'btn-primary'" [disabled]="this.companyForm.invalid">{{edit?'Update':'Save'}}</button>
+            <!-- <button type="submit" class="btn" [ngClass]="edit?'btn-warning':'btn-primary'" >{{edit?'Update':'Save'}}</button> -->
+          </div>
+        </form>
+      </div>

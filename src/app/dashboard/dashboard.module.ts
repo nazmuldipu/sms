@@ -10,17 +10,23 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RolesComponent } from './roles/roles.component';
 import { UserComponent } from './user/user.component';
+import { ClassComponent } from './class/class.component';
+import { StudentsComponent } from './students/students.component';
 
 const routing = RouterModule.forChild([
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   {
-      path: '', component: DashboardComponent,
-      children: [
-          { path: 'index', component: IndexComponent },
-          { path: 'login', component: LoginComponent },
-          { path: 'register', component: RegisterComponent },
-          { path: 'roles', component: RolesComponent },
-          { path: 'user', component: UserComponent },
-          { path: '**', redirectTo: '/dashboard/index' }
+    path: '', component: DashboardComponent,
+    children: [
+      { path: 'index', component: IndexComponent },
+      { path: 'roles', component: RolesComponent },
+      { path: 'user', component: UserComponent },
+      { path: 'classes', component: ClassComponent },
+      { path: 'students', component: StudentsComponent },
+      { path: 'company', loadChildren: 'app/dashboard/company/company.module#CompanyModule' },
+      { path: 'sms', loadChildren: 'app/dashboard/sms/sms.module#SMSModule' },
+      { path: '**', redirectTo: '/dashboard/index' }
       ]
   },
 ]);
@@ -40,7 +46,9 @@ const routing = RouterModule.forChild([
     LoginComponent,
     RegisterComponent,
     RolesComponent,
-    UserComponent
+    UserComponent,
+    ClassComponent,
+    StudentsComponent
   ]
 })
 export class DashboardModule { }

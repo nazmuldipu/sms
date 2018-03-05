@@ -21,51 +21,40 @@
                 <li class="nav-item dropdown" ngbDropdown  *ngIf="hasRole('ADMIN')">
                     <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle >Company</a>
                     <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdown01">
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/user/add"><i class="fa fa-plus"></i> Add Company</a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/userList"><i class="fa fa-th-list"></i> Company List</a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/userList"><i class="fa fa-th-list"></i> Change Student Limit</a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/userList"><i class="fa fa-th-list"></i> Buy SMS</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/company/index"><i class="fa fa-book"></i>Index</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/company/add"><i class="fa fa-building"></i>Add Company</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/company/studentLimit"><i class="fa fa-line-chart"></i> Change Student Limit</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/company/buySMS"><i class="fa fa-briefcase"></i> Buy SMS</a>
                     </div>
                 </li>
-                
-                <li class="nav-item dropdown" ngbDropdown *ngIf="auth.authenticated">
-                    <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle >Class</a>
-                    <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdown01">
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/addClass/add"><i class="fa fa-plus"></i> Add Class</a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/classList"><i class="fa fa-th-list"></i> Class List</a>
-                    </div>
+                <li class="nav-item dropdown" ngbDropdown *ngIf="hasRole('ADMIN')|| hasRole('ACADEMIC')">
+                    <a class="nav-link" (click)="toggleCollapse()" routerLink="/dashboard/classes">Classes</a>
+                </li>
+                <li class="nav-item dropdown" ngbDropdown *ngIf="hasRole('ADMIN')|| hasRole('ACADEMIC')">
+                    <a class="nav-link" (click)="toggleCollapse()" routerLink="/dashboard/students">Students</a>
                 </li>
                 
-                <li class="nav-item dropdown" ngbDropdown *ngIf="auth.authenticated">
-                    <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle >Student</a>
-                    <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdown01">
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/addStudent/add"><i class="fa fa-plus"></i> Add Student</a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/studentList"><i class="fa fa-th-list"></i> Student List</a>
-                        <!-- <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/snackBar"><i class="fa fa-th-list"></i> snackBar</a> -->
-                    </div>
-                </li>
-                
-                <li class="nav-item dropdown" ngbDropdown *ngIf="auth.authenticated">
+                <li class="nav-item dropdown" ngbDropdown *ngIf="hasRole('ACADEMIC')">
                     <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle >SMS</a>
                     <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdown01">
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/allStudent"><i class="fa fa-university"></i> ALL Student</a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/classWise"><i class="fa fa-users"></i> Class Wise</a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/absentSMS"><i class="fa fa-check"></i> Absent </a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/resultSMS"><i class="fa fa-graduation-cap"></i> Result </a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/manualSMS"><i class="fa fa-user"></i> Manual </a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/smsBalance"><i class="fa fa-money"></i> Balance </a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/smsHistory"><i class="fa fa-history"></i> History </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/sms/all-student-eng"><i class="fa fa-university"></i> ALL Student</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/sms/class-student-eng"><i class="fa fa-users"></i> Class Wise</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/sms/absent-eng"><i class="fa fa-check"></i> Absent </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/sms/result-eng"><i class="fa fa-graduation-cap"></i> Result </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/sms/manual-eng"><i class="fa fa-user"></i> Manual </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/sms/balance"><i class="fa fa-money"></i> Balance </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/sms/history"><i class="fa fa-history"></i> History </a>
                     </div>
                 </li>
                 
-                <li class="nav-item dropdown" ngbDropdown *ngIf="auth.authenticated">
+                <li class="nav-item dropdown" ngbDropdown *ngIf="hasRole('ACADEMIC')">
                     <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle >খুদেবার্তা</a>
                     <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdown01">
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/allStudentBangla"><i class="fa fa-university"></i> সকল ছাত্র/ছাত্রী</a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/classWiseBangla"><i class="fa fa-users"></i> ক্লাস অনুযায়ী</a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/absentSMSBangla"><i class="fa fa-check"></i> অনুপুস্থিত </a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/resultSMSBangla"><i class="fa fa-graduation-cap"></i> ফলাফল </a>
-                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/coaching/manualSMSBangla"><i class="fa fa-user"></i> ম্যানুয়াল </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/sms/all-student-bd"><i class="fa fa-university"></i> সকল ছাত্র/ছাত্রী</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/sms/class-student-bd"><i class="fa fa-users"></i> ক্লাস অনুযায়ী</a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/sms/absent-bd"><i class="fa fa-check"></i> অনুপুস্থিত </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/sms/result-bd"><i class="fa fa-graduation-cap"></i> ফলাফল </a>
+                        <a class="dropdown-item" (click)="toggleCollapse()" routerLink="/dashboard/sms/manual-bd"><i class="fa fa-user"></i> ম্যানুয়াল </a>
                     </div>
                 </li>
 

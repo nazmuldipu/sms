@@ -5,6 +5,9 @@ import { User } from '../../models/user.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RoleService } from '../../services/role.service';
 import { RolesPage } from '../../models/roles-page.model';
+import { CompanyService } from '../../services/company.service';
+import { Company } from '../../models/company.model';
+import { Role } from '../../models/role.model';
 
 @Component({
   selector: 'app-user',
@@ -15,15 +18,20 @@ export class UserComponent implements OnInit {
   arr = Array;
   user: User;
   userForm: FormGroup;
+  companyList: Company[] = [];
   edit = false;
   showPassword = false;
   
   constructor(private builder: FormBuilder,
     private userService: UserService,
+    private companyService: CompanyService,
     private roleService: RoleService) { 
 
     this.user = new User();
+    this.user.companyInfo = new Company();
+    this.user.roles = new Array<Role>();
     this.createForm();
+    this.getCompanyList();
   }
 
   ngOnInit() {
@@ -31,6 +39,7 @@ export class UserComponent implements OnInit {
 
   createForm() {
     this.userForm = this.builder.group({
+      companyId: ['', Validators.required],
       name: ['', Validators.required ],
       email: ['', [Validators.email, Validators.required]],
       password: ['', [Validators.minLength(6), Validators.required]],
@@ -58,14 +67,24 @@ export class UserComponent implements OnInit {
     this.userService.getUserPage(page);
   }
 
+  getCompanyList(){
+    this.companyService.getCompanyList()
+    .subscribe(
+      data =>{
+        this.companyList=data;
+        // this.companyId = data[0].id;
+        console.log(this.companyList);
+      }
+    )
+  }
+
   saveUser(){
     console.log(this.user);
-    console.log(this.userForm.value);
-    console.log(this.userForm.controls.password.errors);
+    // console.log(this.userForm.value);
+    // console.log(this.userForm.controls.password.errors);
     if(this.userForm.valid){
       this.userService.saveUser(this.user);
-      this.user = new User();
-      this.edit = false;
+      this.clear();      
     }
   }
 
@@ -82,6 +101,8 @@ export class UserComponent implements OnInit {
 
   clear(){
     this.user = new User();
+    this.user.companyInfo = new Company();
+    this.user.roles = new Array<Role>();
     this.edit = false;
     this.createForm();
   }

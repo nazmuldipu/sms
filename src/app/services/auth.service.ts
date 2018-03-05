@@ -61,6 +61,7 @@ export class AuthService {
             .subscribe(
                 data => {
                     // Save username and roles
+                    console.log(data);
                     this.user.name = data.username;
                     this.user.id = data.userId;
                     this.user.email = data.email;
@@ -99,6 +100,7 @@ export class AuthService {
         this.Cookie.removeAll();
         this.user = new User();
         this.roles = [];
+        localStorage.clear();
         this.router.navigateByUrl('/home');
         console.log('All token cleared and logged out ');
     }
