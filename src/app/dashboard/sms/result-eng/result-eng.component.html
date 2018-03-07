@@ -1,3 +1,102 @@
-<p>
-  result-eng works!
-</p>
+<div class="container mt-2">
+  <div class="row">
+    <div class="col-12" *ngIf="message.length>0">
+      <div class="alert alert-primary" role="alert">
+        {{message}}
+        <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="errorMessage.length>0">
+      <div class="alert alert-warning" role="alert">
+        {{errorMessage}}
+        <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
+      </div>
+    </div>
+  </div>
+  <form class="row m-0" #result="ngForm" (ngSubmit)="send(result.value)">
+    <div class="col-12 col-md-6 raised">
+
+      <div class="form-group row mx-4">
+        <label class="col-sm-3 col-form-label">Class</label>
+        <div class="col-sm-9">
+          <select class="form-control" name="classId" #cl (change)="classChanged(cl.value)" [(ngModel)]="classId">
+            <option value="">Select a class</option>
+            <option *ngFor="let class of classList" [value]="class.id">{{class.className}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row mx-4">
+        <div class="col-sm-6">
+          <input type="text" class="form-control" #tmessage (keyup)="nameKeyup(tmessage.value)" placeholder="Exam Name" maxlength="10" name="message" [(ngModel)]="generalSMSList.message"
+            required>
+          <small class="form-text text-muted">Exam Name</small>
+        </div>
+        <div class="col-sm-6">
+          <input type="number" class="form-control" placeholder="Maximum Mark" max="999" name="number" [(ngModel)]="generalSMSList.number"
+            required>
+          <small class="form-text text-muted">Exam Name</small>
+        </div>
+      </div>
+      <div class="form-group row mx-4">
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>নাম</th>
+            <th>Result (0 for absent, -1 for No SMS)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of studentList; index as i">
+            <td>{{student.studentId}}</td>
+            <td>{{student.name}}</td>
+            <td>{{student.nameBangla}}</td>
+            <td>
+              <input type="number" (change)="resultChanged(student.id ,$event)" name="message{{i}}" [(ngModel)]="generalSMSList.generalSMSs[i].message">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="from-group">
+        <h3 class="text-center">RESULT SMS</h3>
+      </div>
+      <div class="row m-0">
+        <div class="col-6">
+          Exam Name: {{generalSMSList.message}}
+        </div>
+        <div class="col-6">
+          Max. Marks: {{generalSMSList.number}}
+        </div>
+      </div>
+      <table class="table raised">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Marks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of showList">
+            <td>{{student.studentId}}</td>
+            <td>{{student.name}}</td>
+            <td>{{student.phone}}</td>
+          </tr>
+        </tbody>
+        <div class="form-group mx-3 pb-3">
+          <button type="submit" class="btn btn-primary" [disabled]="result.invalid">
+            <i class="fa fa-paper-plane"></i>Send
+          </button>
+        </div>
+      </table>
+    </div>
+  </form>
+</div>

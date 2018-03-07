@@ -1,3 +1,102 @@
-<p>
-  result-bd works!
-</p>
+<div class="container mt-2">
+  <div class="row">
+    <div class="col-12" *ngIf="message.length>0">
+      <div class="alert alert-primary" role="alert">
+        {{message}}
+        <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="errorMessage.length>0">
+      <div class="alert alert-warning" role="alert">
+        {{errorMessage}}
+        <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
+      </div>
+    </div>
+  </div>
+  <form class="row m-0" #result="ngForm" (ngSubmit)="send(result.value)">
+    <div class="col-12 col-md-6 raised">
+
+      <div class="form-group row mx-4">
+        <label class="col-sm-3 col-form-label">ক্লাস</label>
+        <div class="col-sm-9">
+          <select class="form-control" name="classId" #cl (change)="classChanged(cl.value)" [(ngModel)]="classId">
+            <option value="">ক্লাস নির্বাচন করুন</option>
+            <option *ngFor="let class of classList" [value]="class.id">{{class.className}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row mx-4">
+        <div class="col-sm-6">
+          <input type="text" class="form-control" placeholder="পরীক্ষার নাম" maxlength="10" name="message" [(ngModel)]="generalSMSList.message"
+            required>
+          <small class="form-text text-muted">পরীক্ষার নাম</small>
+        </div>
+        <div class="col-sm-6">
+          <input type="number" class="form-control" placeholder="সর্বোচ্চ নম্বর" max="999" name="number" [(ngModel)]="generalSMSList.number"
+            required>
+          <small class="form-text text-muted">সর্বোচ্চ নম্বর</small>
+        </div>
+      </div>
+      <div class="form-group row mx-4">
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>আইডি</th>
+            <th>Name</th>
+            <th>নাম</th>
+            <th>নম্বর (0= অনুপুস্থিত, -1=বার্তাহীন)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of studentList; index as i">
+            <td>{{student.studentId}}</td>
+            <td>{{student.name}}</td>
+            <td>{{student.nameBangla}}</td>
+            <td>
+              <input type="number" (change)="resultChanged(student.id ,$event)" name="message{{i}}" [(ngModel)]="generalSMSList.generalSMSs[i].message">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="from-group">
+        <h3 class="text-center">ফলাফল বার্তা</h3>
+      </div>
+      <div class="row m-0">
+        <div class="col-6">
+          পরীক্ষার নাম: {{generalSMSList.message}}
+        </div>
+        <div class="col-6">
+          সর্বোচ্চ নম্বর: {{generalSMSList.number}}
+        </div>
+      </div>
+      <table class="table raised">
+        <thead>
+          <tr>
+            <th>আইডি</th>
+            <th>নাম</th>
+            <th>নম্বর</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of showList">
+            <td>{{student.studentId}}</td>
+            <td>{{student.name}}</td>
+            <td>{{student.phone}}</td>
+          </tr>
+        </tbody>
+        <div class="form-group mx-3 pb-3">
+          <button type="submit" class="btn btn-primary" [disabled]="result.invalid">
+            <i class="fa fa-paper-plane"></i>Send
+          </button>
+        </div>
+      </table>
+    </div>
+  </form>
+</div>

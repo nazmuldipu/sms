@@ -1,3 +1,50 @@
-<p>
-  all-student-eng works!
-</p>
+<div class="container mt-2">
+  <div class="row">
+    <div class="col-12" *ngIf="message.length>0">
+      <div class="alert alert-primary" role="alert">
+        {{message}}
+        <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="errorMessage.length>0">
+      <div class="alert alert-warning" role="alert">
+        {{errorMessage}}
+        <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+
+    </div>
+
+    <div class="col-12 col-md-6">
+      
+      <form [formGroup]="allStudentForm" (ngSubmit)="send()">
+        <div class="from-group">
+          <h3 class="text-center">ALL STUDENTS SMS</h3>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Type your message here</label>
+          <textarea 
+            class="form-control" 
+            rows="4" 
+            maxlength="160"
+            #tmessage
+            (keyup)="nameKeyup(tmessage.value)" 
+            [(ngModel)]="generalSMS.message" 
+            formControlName="message">
+          </textarea>
+          <small class="form-text pull-right">{{tmessage.value?.length}}/160</small>
+        </div>
+
+        <div class="form-group">
+
+          <button class="btn btn-primary" [disabled]="allStudentForm.invalid">
+            <i class="fa fa-paper-plane"></i>Send
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
