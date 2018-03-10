@@ -4,6 +4,7 @@ import { RestDataSource } from "./rest.datasource";
 import { RequestMethod } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { GeneralSMS } from "../models/general-sms.model";
+import { SMSPage } from "../models/sms-page.model";
 
 @Injectable()
 export class SMSService {
@@ -48,6 +49,13 @@ export class SMSService {
         return this.datasource.sendRequest(RequestMethod.Post, this.serviceUrl+`/manualBD`, generalSMS, true, null)
     }
 
-    
+    getBalance():Observable<any>{
+        return this.datasource.sendRequest(RequestMethod.Get, this.serviceUrl+`/balance`, null, true, null);
+    }
+
+    getHistory(page: number = null):Observable<SMSPage>{
+        const pageUrl = page == null ? ''  :  'page=' + page + '&';
+        return this.datasource.sendRequest(RequestMethod.Get, this.serviceUrl+`/history`, null, true, pageUrl); 
+    }
     
 }
