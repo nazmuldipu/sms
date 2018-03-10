@@ -1,3 +1,60 @@
-<p>
-  manual-eng works!
-</p>
+<div class="container mt-2">
+    <div class="row">
+      <div class="col-12" *ngIf="message.length>0">
+        <div class="alert alert-primary" role="alert">
+          {{message}}
+          <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
+        </div>
+      </div>
+  
+      <div class="col-12" *ngIf="errorMessage.length>0">
+        <div class="alert alert-warning" role="alert">
+          {{errorMessage}}
+          <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
+        </div>
+      </div>
+  
+      <div class="col-12 col-md-6">
+  
+      </div>
+  
+      <div class="col-12 col-md-6">
+        
+        <form [formGroup]="manualSMSForm" (ngSubmit)="send()">
+          <div class="from-group">
+            <h3 class="text-center">MANUAL SMS</h3>
+          </div>
+
+          <div class="form-group">
+              <label for="manualsmsnumber">Phone Number</label>
+              <input class="form-control" formControlName="number" [(ngModel)]="generalSMS.number">
+              <small class="text-danger" *ngIf="manualSMSForm.controls.number.errors?.required && manualSMSForm.controls.number.dirty ">Telephone Required</small>
+              <small class="text-danger" *ngIf="manualSMSForm.controls.number.errors?.pattern && manualSMSForm.controls.number.dirty && !manualSMSForm.controls.number.errors?.required">Invaild (use +8801882332428 pattern)</small>
+  
+          </div>
+
+          <div class="form-group">
+            <label for="manualsmsmessage">Type your message here</label>
+            <textarea 
+              class="form-control" 
+              id = "manualsmsmessage"
+              rows="4" 
+              maxlength="160"
+              #tmessage
+              (keyup)="nameKeyup(tmessage.value)" 
+              [(ngModel)]="generalSMS.message" 
+              formControlName="message">
+            </textarea>
+            <small class="form-text pull-right">{{tmessage.value?.length}}/160</small>
+          </div>
+  
+          <div class="form-group">
+  
+            <button class="btn btn-primary" [disabled]="manualSMSForm.invalid">
+              <i class="fa fa-paper-plane"></i>Send
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

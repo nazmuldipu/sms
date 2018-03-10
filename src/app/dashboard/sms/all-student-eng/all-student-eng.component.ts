@@ -43,6 +43,7 @@ export class AllStudentEngComponent implements OnInit {
         .subscribe(
           data => {
             this.message = '';
+            console.log(data);
             data.forEach(resp => {
               this.message += resp.number + ': ' + resp.result + ';  ';
             });

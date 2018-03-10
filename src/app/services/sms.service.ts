@@ -41,6 +41,13 @@ export class SMSService {
         return this.datasource.sendRequest(RequestMethod.Post, this.serviceUrl+`/resultBD`, generalSMSList, true, null)
     }
 
+    sendManualEng(generalSMS: GeneralSMS):Observable<any>{
+        return this.datasource.sendRequest(RequestMethod.Post, this.serviceUrl+`/manualENG`, generalSMS, true, null)
+    }
+    sendManualBd(generalSMS: GeneralSMS):Observable<any>{
+        return this.datasource.sendRequest(RequestMethod.Post, this.serviceUrl+`/manualBD`, generalSMS, true, null)
+    }
+
     
     
 }
