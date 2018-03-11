@@ -9,89 +9,31 @@ import { Role } from '../models/role.model';
 
 @Injectable()
 export class RoleService {
-    public rolesPage: RolesPage;
-    private locator = (p: Role, id: number) => p.id == id;
     serviceUrl = 'api/v1/roles';
-    message='';
-    errMessage='';
+
     constructor(private router: Router, private datasource: RestDataSource) {
-        this.getRolesPage();
     }
 
-    getMessage():string{
-        return this.message;
-    }
-    getErrorMessage():string{
-        return this.errMessage;
+    getRoleList(): Observable<Role[]>{
+        return this.datasource.sendRequest(RequestMethod.Get, this.serviceUrl+'/list', null, true, null);
     }
 
-    getRole( id: number ){
-        return this.rolesPage.content.find(p => this.locator(p, id));
+    getRolesPage(page: number = null): Observable<RolesPage> {
+        const pageUrl = page == null ? '' : 'page=' + page + '&';
+        return this.datasource.sendRequest(RequestMethod.Get, this.serviceUrl, null, true, pageUrl);
     }
 
-    getRoles(): RolesPage{
-        return this.rolesPage;
+    saveRoles(role: Role): Observable<Role> {
+        return this.datasource.sendRequest(RequestMethod.Post, this.serviceUrl, role, true, null);
     }
 
-    getRolesPage(page: number = null) {
-        const pageUrl = page == null ? ''  :  'page=' + page + '&';
-        this.datasource.sendRequest(RequestMethod.Get, this.serviceUrl, null , true, pageUrl)
-            .subscribe(
-                data => {
-                    this.rolesPage = data;
-                },
-                error => {
-                    this.errMessage = 'Role pageing loading failure';
-                }
-            );
+    updateRole(role: Role): Observable<Role> {
+        if (role.id != 1)
+            return this.datasource.sendRequest(RequestMethod.Put, this.serviceUrl + `/${role.id}`, role, true, null);
     }
 
-    saveRoles(role: Role){
-        if (role.id == 0 || role.id == null) {
-            this.datasource.sendRequest(RequestMethod.Post, this.serviceUrl, role, true, null)
-            .subscribe(
-                data => {
-                    this.message= 'Role saved'
-                    this.rolesPage.content.push(data);
-                },
-                error => {
-                    this.errMessage = 'Role saving filed';
-                    console.log('Role saving failed ');
-                }
-            );
-        } else if (role.id == 1){
-            this.errMessage = 'Aleart!! Sorry ADMIN role can not chage';
-        }else {
-            this.datasource.sendRequest(RequestMethod.Put, this.serviceUrl+`/${role.id}`, role, true, null)
-            .subscribe(
-                data => {
-                    this.rolesPage.content.splice(this.rolesPage.content.findIndex(p => this.locator(p, role.id)), 1, role);
-                    this.message = 'Role updated';
-                },
-                error => {
-                    this.errMessage='Role update failed';
-                    console.log('Operation failed ');
-                }
-            );
-        }
+    deleteRole(id: number):Observable<Response>{
+        if (id != 1)
+            return this.datasource.sendRequest(RequestMethod.Delete, this.serviceUrl + `/${id}`, null, true, null);
     }
-
-    deleteRole(id: number){
-        if(id == 1){
-            this.errMessage = 'Aleart!! Sorry ADMIN role delete permission denided'
-        } else {
-            this.datasource.sendRequest(RequestMethod.Delete, this.serviceUrl+`/${id}`, null, true, null)
-                .subscribe(
-                    data => {
-                        this.rolesPage.content.splice(this.rolesPage.content.findIndex(cus => cus.id === id), 1);
-                        this.message = 'Role deleted : ' + data.statusText;
-                    }, 
-                    err => {
-                        console.log('Could not delete', 'Failed');
-                        this.errMessage = 'Could not delete role';
-                    }
-                );
-        }
-    }
-    
 }

@@ -2,10 +2,12 @@
   <div class="row">
     <div class="col-12">
       <div class="alert alert-success" role="alert" *ngIf="message?.length>0">
-          <strong>{{message}}</strong>
+        <strong>{{message}}</strong>
+        <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="errMessage?.length>0">
-          <strong>{{errMessage}}</strong>
+        <strong>{{errMessage}}</strong>
+        <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
       </div>
     </div>
     <div class="col-12 col-md-8 raised">
@@ -30,43 +32,45 @@
               <span *ngFor="let role of user.roles">{{role.name}}, </span>
             </td>
             <td>
-              <button class="btn btn-warning btn-sm raised" 
-                  (click)="editUser(user.id)">
-                  <i class="fa fa-pencil-square-o"></i> 
-              </button> 
-              <button class="btn btn-danger btn-sm raised" 
-                  (click)="deleteUser(user.id)">
-                  <i class="fa fa-trash-o"></i> 
-              </button> 
+              <button class="btn btn-warning btn-sm raised" (click)="editUser(user.id)">
+                <i class="fa fa-pencil-square-o"></i>
+              </button>
+              <button class="btn btn-danger btn-sm raised" (click)="deleteUser(user.id)">
+                <i class="fa fa-trash-o"></i>
+              </button>
             </td>
           </tr>
-          <tr *ngFor="let i of arr(10 - userPage?.numberOfElements)" >
-              <td colspan="5">
-                  <a class="btn btn-sm">
-                      &nbsp;
-                  </a> 
-              </td>
+          <tr *ngFor="let i of arr(10 - userPage?.numberOfElements)">
+            <td colspan="6">
+              <a class="btn btn-sm">
+                &nbsp;
+              </a>
+            </td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <!-- <td>
-                <a class="btn btn-primary btn-sm raised" 
-                [routerLink] (click)="clear()">
-                    <i class="fa fa-plus"></i> Add
-                </a> 
-            </td> -->
             <td></td>
             <td colspan="5">
               <div aria-label="Page navigation example">
                 <ul class="pagination justify-content-end m-0">
-                  <li class="page-item" [ngClass]="{'disabled': userPage?.first}" ><a class="page-link" [routerLink] (click)="getUserPage(0)" > First </a></li>
-                  <li class="page-item" [ngClass]="{'disabled': userPage?.number == 0}" ><a class="page-link" [routerLink] (click)="getUserPage(userPage?.number-1)" > Previous </a></li>
-  
-                  <li class="page-item"><a class="page-link" > {{userPage?.number+1}} / {{userPage?.totalPages}} </a></li>
-  
-                  <li class="page-item" [ngClass]="{'disabled': userPage?.last}"><a class="page-link" [routerLink] (click)="getUserPage(userPage?.number+1)"> Next </a></li>
-                  <li class="page-item" [ngClass]="{'disabled': userPage?.last}"><a class="page-link" [routerLink] (click)="getUserPage(userPage?.totalPages-1)"> Last </a></li>
+                  <li class="page-item" [ngClass]="{'disabled': userPage?.first}">
+                    <a class="page-link" [routerLink] (click)="getUserPage(0)"> First </a>
+                  </li>
+                  <li class="page-item" [ngClass]="{'disabled': userPage?.number == 0}">
+                    <a class="page-link" [routerLink] (click)="getUserPage(userPage?.number-1)"> Previous </a>
+                  </li>
+
+                  <li class="page-item">
+                    <a class="page-link"> {{userPage?.number+1}} / {{userPage?.totalPages}} </a>
+                  </li>
+
+                  <li class="page-item" [ngClass]="{'disabled': userPage?.last}">
+                    <a class="page-link" [routerLink] (click)="getUserPage(userPage?.number+1)"> Next </a>
+                  </li>
+                  <li class="page-item" [ngClass]="{'disabled': userPage?.last}">
+                    <a class="page-link" [routerLink] (click)="getUserPage(userPage?.totalPages-1)"> Last </a>
+                  </li>
                 </ul>
               </div>
             </td>
@@ -84,12 +88,11 @@
         <form [formGroup]="userForm" (ngSubmit)="saveUser()" novalidate>
 
           <div class="form-group row mx-3">
-              <label>Company</label>
-              <!-- <div class="col-10"> -->
-                  <select class="form-control" name="companyId" formControlName="companyId" [(ngModel)]="user.companyInfo.id">
-                      <option *ngFor="let company of companyList" [ngValue]="company.id">{{company.companyName}}</option>
-                  </select>
-              <!-- </div> -->
+            <label>Company</label>
+            <select class="form-control" name="companyId" formControlName="companyId" [(ngModel)]="user.companyInfo.id">
+              <option [ngValue]="undefined"  selected> --- Select one Company --- </option>
+              <option *ngFor="let company of companyList" [ngValue]="company.id">{{company.companyName}}</option>
+            </select>
           </div>
           <div class="form-group mx-3">
             <label>User Name</label>
@@ -102,41 +105,42 @@
             <small class="text-danger" *ngIf="userForm.controls.email.errors?.required && userForm.controls.email.dirty">Email Required</small>
             <small class="text-danger" *ngIf="userForm.controls.email.errors?.email && userForm.controls.email.dirty && !userForm.controls.email.errors?.required">Invalid Email address</small>
           </div>
-          
+
           <div class="form-group mx-3">
             <label>User Password </label>
             <div class="input-group mb-1 mr-sm-2 mb-sm-0">
               <!-- <div class="input-group-addon"><i class="fa fa-key"></i></div> -->
-              <input [type]="showPassword ? 'text' : 'password'" class="form-control" placeholder="User Password" [(ngModel)]="user.password" formControlName="password">
+              <input [type]="showPassword ? 'text' : 'password'" class="form-control" placeholder="User Password" [(ngModel)]="user.password"
+                formControlName="password">
               <!-- <input [type]="showPassword ? 'text' : 'password'" class="form-control" placeholder="User password" [(ngModel)]="user.password" formControlName="password"> -->
               <span class="input-group-btn">
-                <a class="btn btn-outline-secondary" (click)="showPassword = !showPassword" ><i class="fa fa-eye" [ngClass]="showPassword?'fa-eye-slash':'fa-eye'"></i></a>
+                <a class="btn btn-outline-secondary" (click)="showPassword = !showPassword">
+                  <i class="fa fa-eye" [ngClass]="showPassword?'fa-eye-slash':'fa-eye'"></i>
+                </a>
               </span>
             </div>
             <small class="text-danger" *ngIf="userForm.controls.password.errors?.required && userForm.controls.password.dirty">Password Required</small>
             <small class="text-danger" *ngIf="userForm.controls.password.errors?.minlength && userForm.controls.password.dirty && !userForm.controls.password.errors?.required">Min 6 character required</small>
           </div>
-          
+
 
           <div class="form-group row mx-3">
-              <label class="col-2 col-form-label">Roles</label>
-              <div class="col-10">
-                  <select class="form-control" name="roles" [(ngModel)]="user.roles"
-                      multiple = "multiple" size="6" formControlName="roles">
-                      <option *ngFor="let role of rolesPage?.content" [ngValue]="role">{{role.name}}</option>
-                  </select>
-              </div>
+            <label class="col-2 col-form-label">Roles</label>
+            <div class="col-10">
+              <select class="form-control" name="roles" [(ngModel)]="user.roles" multiple="multiple" size="6" formControlName="roles">
+                <option *ngFor="let role of roleList" [ngValue]="role">{{role.name}}</option>
+              </select>
+            </div>
           </div>
 
           <div class="form-check m-3">
             <label class="form-check-label">
-              <input type="checkbox" class="form-check-input" [(ngModel)]="user.active" formControlName="active">
-              Active
+              <input type="checkbox" class="form-check-input" [(ngModel)]="user.active" formControlName="active"> Active
             </label>
           </div>
 
           <div class="form-group mx-3 pb-3">
-            <button type="button" class="btn btn-light" (click)="clear()">Clear</button>
+            <button type="button" class="btn btn-danger" (click)="clear()">Clear</button>
             <button type="submit" class="btn" [ngClass]="edit?'btn-warning':'btn-primary'" [disabled]="this.userForm.invalid">{{edit?'Update':'Save'}}</button>
             <!-- <button type="submit" class="btn" [ngClass]="edit?'btn-warning':'btn-primary'" >{{edit?'Update':'Save'}}</button> -->
           </div>
@@ -145,4 +149,3 @@
     </div>
   </div>
 </div>
-  

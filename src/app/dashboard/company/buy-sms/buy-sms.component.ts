@@ -11,11 +11,14 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 })
 export class BuySmsComponent implements OnInit {
   company: Company;
+  companyPage: CompanyPage;
   companyForm: FormGroup;
+  message = '';
+  errMessage = '';
 
   constructor(private companyService: CompanyService) {
     this.company = new Company();
-    this.companyService.getCompanyPage();
+    this.getCompanyPage();
   }
 
   ngOnInit() {
@@ -25,30 +28,37 @@ export class BuySmsComponent implements OnInit {
     });
   }
 
-  get message(): string{
-    return this.companyService.getMessage();
-  }
-  get errMessage(): string{
-    return this.companyService.getErrorMessage();
-  }
-
-  get companyPage():CompanyPage{
-    return this.companyService.getCompanies();
+  getCompanyPage(page: number = null) {
+    this.companyService.getCompanyPage(page)
+      .subscribe(
+        data => this.companyPage = data,
+        error => this.errMessage = 'Company could not load' + error.status,
+    )
   }
 
-  getCompanyPage(page: number = null){
-    this.companyService.getCompanyPage(page);
-  }
-
-  getCompanyId(id:number){
+  getCompanyId(id: number) {
     this.companyForm.controls.compnayId.setValue(id);
-    this.company = this.companyService.getCompany(id);
+    Object.assign(this.company, this.companyPage.content.find(p => p.id == id));
   }
 
-  buySMS(){
+  buySMS() {
     const companyId = this.companyForm.controls.compnayId.value;
     const smsQuota = this.companyForm.controls.smsQuota.value;
-    this.companyService.buySMS(companyId, smsQuota);
+    this.companyService.buySMS(companyId, smsQuota)
+    .subscribe(
+      data => {
+        this.companyPage.content.splice(this.companyPage.content.findIndex(p => p.id == data.id), 1, data);
+        this.message = 'SMS bought successfully';
+      },
+      error => this.errMessage = 'SMS Buying FAILED',
+    )
+  }
+
+  clear() {
+    this.company = new Company();
+    this.companyForm.controls.smsQuota.setValue(null);
+    this.message = '';
+    this.errMessage = '';
   }
 
 }

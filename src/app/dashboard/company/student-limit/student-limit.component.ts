@@ -11,12 +11,15 @@ import { CompanyPage } from '../../../models/company-page.model';
 })
 export class StudentLimitComponent implements OnInit {
   company: Company;
+  companyPage: CompanyPage;
   companyForm: FormGroup;
-  
+  message = '';
+  errMessage = '';
+
   constructor(private companyService: CompanyService) {
     this.company = new Company();
-    this.companyService.getCompanyPage();
-   }
+    this.getCompanyPage();
+  }
 
   ngOnInit() {
     this.companyForm = new FormGroup({
@@ -25,30 +28,38 @@ export class StudentLimitComponent implements OnInit {
     });
   }
 
-  get message(): string{
-    return this.companyService.getMessage();
-  }
-  get errMessage(): string{
-    return this.companyService.getErrorMessage();
-  }
-
-  get companyPage():CompanyPage{
-    return this.companyService.getCompanies();
+  getCompanyPage(page: number = null) {
+    this.companyService.getCompanyPage(page)
+      .subscribe(
+        data => this.companyPage = data,
+        error => this.errMessage = 'Company could not load' + error.status,
+    )
   }
 
-  getCompanyPage(page: number = null){
-    this.companyService.getCompanyPage(page);
-  }
-
-  getCompanyId(id:number){
+  getCompanyId(id: number) {
     this.companyForm.controls.compnayId.setValue(id);
-    this.company = this.companyService.getCompany(id);
+    Object.assign(this.company, this.companyPage.content.find(p => p.id == id));
   }
 
-  changeStudentlimit(){
+  changeStudentlimit() {
     const companyId = this.companyForm.controls.compnayId.value;
     const studentLimit = this.companyForm.controls.studentLimit.value;
-    this.companyService.changeStudentLimit(companyId, studentLimit);
+    this.companyService.changeStudentLimit(companyId, studentLimit)
+      .subscribe(
+        data => {
+          this.companyPage.content.splice(this.companyPage.content.findIndex(p => p.id == data.id), 1, data);
+          this.message = 'Student Limit Changed';
+        },
+        error => this.errMessage = 'Student Limit changing FAILED',
+    )
+    this.clear();
+  }
+
+  clear() {
+    this.company = new Company();
+    this.companyForm.controls.studentLimit.setValue(null);
+    this.message = '';
+    this.errMessage = '';
   }
 
 }

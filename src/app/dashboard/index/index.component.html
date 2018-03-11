@@ -1,5 +1,16 @@
-<div class="container" style="min-height: calc(100vh - 144px);">
+<div class="container">
     <div class="row my-2">
+        <div class="col-12 col-sm-6 col-md-3 col-lg-3" *ngIf="hasRole('ADMIN')">
+            <div class="info-box hover-expand-effect">
+                <div class="icon bg-deep-purple">
+                    <i class="fa fa-building"></i>
+                </div>
+                <div class="content">
+                    <div class="text">COMPANIES</div>
+                    <div class="number">{{report?.studentPercentage}}</div>
+                </div>
+            </div>
+        </div>
         <div class="col-12 col-sm-6 col-md-3 col-lg-3">
             <div class="info-box hover-expand-effect">
                 <div class="icon bg-deep-purple">
@@ -17,10 +28,16 @@
                 <div class="icon bg-green">
                     <i class="fa fa-graduation-cap"></i>
                 </div>
-                <div class="content">
+                <div class="content" *ngIf="!hasRole('ADMIN'); else elseBlock">
                     <div class="text">STUDENTS</div>
                     <div class="number">{{report?.studentNumber}} ({{report?.studentPercentage}}%)</div>
                 </div>
+                <ng-template #elseBlock>
+                    <div class="content">
+                        <div class="text">STUDENTS</div>
+                        <div class="number">{{report?.studentNumber}}</div>
+                    </div>
+                </ng-template>
             </div>
         </div>
 
@@ -42,8 +59,14 @@
             <table class="table table-bordered table-hover m-0 text-center rounded raised ">
                 <thead>
                     <tr class="bg-light-green">
-                        <th>Class Name</th>
-                        <th>Number of Students</th>
+                        <th>
+                            <span *ngIf="!hasRole('ADMIN'); else elseCompany">Class Name</span> 
+                            <ng-template #elseCompany>Company</ng-template>
+                        </th>
+                        <th>
+                            <span *ngIf="!hasRole('ADMIN'); else elseCompany">Number of Students</span> 
+                            <ng-template #elseCompany>SMS Remain</ng-template>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

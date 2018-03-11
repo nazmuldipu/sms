@@ -53,9 +53,9 @@ export class SMSService {
         return this.datasource.sendRequest(RequestMethod.Get, this.serviceUrl+`/balance`, null, true, null);
     }
 
-    getHistory(page: number = null):Observable<SMSPage>{
+    getHistory(companyId: number, page: number = null):Observable<SMSPage>{
         const pageUrl = page == null ? ''  :  'page=' + page + '&';
-        return this.datasource.sendRequest(RequestMethod.Get, this.serviceUrl+`/history`, null, true, pageUrl); 
+        return this.datasource.sendRequest(RequestMethod.Get, this.serviceUrl+`/history/${companyId}`, null, true, pageUrl); 
     }
     
 }

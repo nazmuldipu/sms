@@ -16,22 +16,29 @@ import { Role } from '../../models/role.model';
 })
 export class UserComponent implements OnInit {
   arr = Array;
+  roleList: Role[];
+  userPage: UserPage;
   user: User;
   userForm: FormGroup;
   companyList: Company[] = [];
+  message = '';
+  errMessage = '';
   edit = false;
   showPassword = false;
-  
+
   constructor(private builder: FormBuilder,
     private userService: UserService,
     private companyService: CompanyService,
-    private roleService: RoleService) { 
+    private roleService: RoleService) {
 
     this.user = new User();
     this.user.companyInfo = new Company();
     this.user.roles = new Array<Role>();
     this.createForm();
+
     this.getCompanyList();
+    this.getUserPage();
+    this.getRolesList();
   }
 
   ngOnInit() {
@@ -40,71 +47,90 @@ export class UserComponent implements OnInit {
   createForm() {
     this.userForm = this.builder.group({
       companyId: ['', Validators.required],
-      name: ['', Validators.required ],
+      name: ['', Validators.required],
       email: ['', [Validators.email, Validators.required]],
       password: ['', [Validators.minLength(6), Validators.required]],
       roles: '',
       active: false,
     });
   }
-  
-  get message(): string{
-    return this.userService.getMessage();
-  }
-  get errMessage(): string{
-    return this.userService.getErrorMessage();
+
+  getUserPage(page: number = null) {
+    this.userService.getUserPage(page)
+      .subscribe(
+        data => this.userPage = data,
+        error => this.errMessage = 'User list could not load ' + error.status,
+    );
   }
 
-  get userPage():UserPage{
-    return this.userService.getUsers();
+  getRolesList() {
+    this.roleService.getRoleList()
+      .subscribe(
+        data => this.roleList = data,
+        error => this.errMessage = 'Role could not load ' + error.status
+      )
   }
 
-  get rolesPage(): RolesPage{
-    return this.roleService.getRoles();
-  }
-
-  getUserPage(page: number = null){
-    this.userService.getUserPage(page);
-  }
-
-  getCompanyList(){
+  getCompanyList() {
     this.companyService.getCompanyList()
-    .subscribe(
-      data =>{
-        this.companyList=data;
-        // this.companyId = data[0].id;
-        console.log(this.companyList);
+      .subscribe(
+        data => {
+          this.companyList = data;
+        }
+      )
+  }
+
+  saveUser() {
+    if (this.userForm.valid) {
+      if (this.user.id == null || this.user.id == 0) {
+        this.userService.saveUser(this.user)
+          .subscribe(
+            data => {
+              this.userPage.content.push(data);
+              this.message = 'User Saved';
+            },
+            error => this.errMessage = 'Error! User could not saved,' + error.status,
+        )
+      } else {
+        this.userService.updateUser(this.user)
+          .subscribe(
+            data => {
+              this.userPage.content.splice(this.userPage.content.findIndex(p => p.id == data.id), 1, data);
+              this.message = 'User Updated';
+            },
+            error => this.errMessage = 'Error! User could not update,' + error.status,
+        )
       }
-    )
-  }
-
-  saveUser(){
-    console.log(this.user);
-    // console.log(this.userForm.value);
-    // console.log(this.userForm.controls.password.errors);
-    if(this.userForm.valid){
-      this.userService.saveUser(this.user);
-      this.clear();      
+      this.clear();
     }
   }
 
-  editUser(id: number){
+  editUser(id: number) {
     this.edit = true;
-    this.user = this.userService.getUser(id);
+    Object.assign(this.user, this.userPage.content.find(p => p.id == id));
+    // this.user = this.userService.getUser(id);
   }
 
-  deleteUser(id:number){
+  deleteUser(id: number) {
     if (confirm('Are you sure to delete')) {
-      this.userService.deleteUser(id);
+      this.userService.deleteUser(id)
+        .subscribe(
+          data => {
+            this.userPage.content.splice(this.userPage.content.findIndex(cus => cus.id == id), 1);
+            this.message = 'User deleted : ' + data.statusText;
+          },
+      )
     }
   }
 
-  clear(){
+  clear() {
     this.user = new User();
     this.user.companyInfo = new Company();
     this.user.roles = new Array<Role>();
     this.edit = false;
     this.createForm();
+    this.message = '';
+    this.errMessage = '';
   }
 
 }

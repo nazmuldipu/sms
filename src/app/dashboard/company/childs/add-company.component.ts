@@ -12,7 +12,7 @@ export class AddCompanyComponent{
     companyForm: FormGroup;
     @Input() company: Company;
     @Output() onCompany:EventEmitter<Company> = new EventEmitter<Company>();
-  
+    @Output() onClear:EventEmitter<any> = new EventEmitter<any>();
     constructor(private builder: FormBuilder) { 
         this.createForm();
     }
@@ -35,11 +35,11 @@ export class AddCompanyComponent{
     saveCompany(){
         this.company.telephone = this.company.telephone.replace(/\s/g, '');
         this.onCompany.emit(this.company);
-        this.company = new Company();
-        this.createForm();
+        this.clear();
     }
     clear(){
         this.company = new Company();
         this.createForm();
+        this.onClear.emit();
     }
 }

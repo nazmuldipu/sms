@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '../../services/report.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-index',
@@ -10,12 +11,17 @@ export class IndexComponent implements OnInit {
   report;
 
   constructor(
-    private reportService: ReportService
+    private reportService: ReportService,
+    private authService: AuthService
   ) {
     this.getReport();
    }
 
   ngOnInit() {
+  }
+
+  hasRole(role: string): boolean {
+    return this.authService.hasRole(role);
   }
 
   getReport(){
@@ -25,5 +31,6 @@ export class IndexComponent implements OnInit {
       error => console.log(error)
     )
   }
+
 
 }

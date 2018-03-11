@@ -18,6 +18,9 @@ export class ClassComponent implements OnInit {
   companyList: Company[] = [];
   class: Class;
   classForm: FormGroup;
+  classPage: ClassPage;
+  message = '';
+  errMessage = '';
   edit = false;
 
   constructor(
@@ -31,68 +34,79 @@ export class ClassComponent implements OnInit {
     this.companyId = +localStorage.getItem('companyId');
     this.createForm();
     this.classService.clear();
-    
+
     this.getCompanyList();
-    if(this.companyId > 0){
-      this.classService.getClassPage(this.companyId);
+    if (this.companyId > 0) {
+      this.getClassPage();
     }
-   }
+  }
 
   ngOnInit() {
+  }
+
+  hasRole(role: string): boolean {
+    return this.authService.hasRole(role);
   }
 
   createForm() {
     this.classForm = this.builder.group({
       companyId: [this.companyId, Validators.required],
-      classId: ['', Validators.required ],
+      classId: ['', Validators.required],
       className: ['', Validators.required],
     });
   }
 
-  get message(): string{
-    return this.classService.getMessage();
-  }
-  get errMessage(): string{
-    return this.classService.getErrorMessage();
-  }
-
-  get classPage():ClassPage{
-    return this.classService.getClasses();
-  }
-
-  getClassPage(page: number = null){
-    this.classService.getClassPage(page);
-  }
-
-  hasRole(role: string):boolean{
-    return this.authService.hasRole(role);
-  }
-
-  getCompanyList(){
-    this.companyService.getCompanyList()
-    .subscribe(
-      data =>{
-        this.companyList=data;
-        if(data.length == 1){
-          this.companyId = data[0].id;
-          this.classForm.controls.companyId.setValue(this.companyId);
-          localStorage.setItem('companyId', this.companyId+'');
-          // this.getClassPage(this.companyId);
-        }
-      }
+  getClassPage(page: number = null) {
+    this.classService.getClassPage(this.companyId, page)
+      .subscribe(
+        data => this.classPage = data,
+        error => this.errMessage = 'Class loading error ' + error.status,
     )
   }
 
-  companyChanged(companyId: number){
-    this.companyId = companyId;
-    localStorage.setItem('companyId', companyId+'');
-    this.classService.getClassPage(companyId);
+
+  getCompanyList() {
+    this.companyService.getCompanyList()
+      .subscribe(
+        data => {
+          this.companyList = data;
+          if (data.length == 1) {
+            this.companyId = data[0].id;
+            this.classForm.controls.companyId.setValue(this.companyId);
+            localStorage.setItem('companyId', this.companyId + '');
+            // this.getClassPage(this.companyId);
+          }
+        }
+      )
   }
 
-  saveClass(){
-    console.log(this.class);
-    if(this.classForm.valid){
-      this.classService.saveClass(this.class, this.companyId);
+  companyChanged(companyId: number) {
+    this.companyId = companyId;
+    localStorage.setItem('companyId', companyId + '');
+    this.getClassPage();
+  }
+
+  saveClass() {
+    if (this.classForm.valid) {
+      if (this.class.id == null || this.class.id == 0) {
+        this.classService.saveClass(this.class, this.companyId)
+          .subscribe(
+            data => {
+              this.classPage.content.push(data);
+              this.message = 'Class Saved';
+            },
+            error => this.errMessage = 'Error! Class could not saved,' + error.status,
+        )
+      } else {
+        this.classService.updateClss(this.class, this.companyId)
+        .subscribe(
+          data => {
+            this.classPage.content.splice(this.classPage.content.findIndex(p => p.id == data.id), 1, data);
+            this.message = 'Class Updated';
+          },
+          error => this.errMessage = 'Error! Clas could not update,' + error.status,
+      )
+      }
       this.class = new Class();
       this.createForm();
       // this.classForm.controls.compnayId.setValue(this.companyId);
@@ -100,26 +114,31 @@ export class ClassComponent implements OnInit {
     }
   }
 
-  editClass(id: number){
+  editClass(id: number) {
     this.edit = true;
-    Object.assign(this.class, this.classService.getClass(id));
-    // this.class = this.classService.getClass(id);
+    Object.assign(this.class, this.classPage.content.find(p => p.id == id));
   }
 
-  deleteClass(id:number){
+  deleteClass(id: number) {
     if (confirm('Are you sure to delete')) {
-      this.classService.deleteClass(id);
+      this.classService.deleteClass(id)
+      .subscribe(
+        data => {
+          this.classPage.content.splice(this.classPage.content.findIndex(cus => cus.id == id), 1);
+          this.message = 'Role deleted : ' + data.statusText;
+        },
+        error => this.errMessage = 'Role could not delete :' + error.status,
+    )
     }
   }
 
-  clear(){
-    // this.createForm();
+  clear() {
     this.class = new Class();
+    // this.class.
     this.edit = false;
-    
-    // this.classForm.controls.compnayId.setValue(this.companyId);
-    this.classService.message = '';
-    this.classService.errMessage = '';
+    this.createForm()
+    this.message = '';
+    this.errMessage = '';
   }
 
 }

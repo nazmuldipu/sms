@@ -11,38 +11,69 @@ import { CompanyPage } from '../../../models/company-page.model';
 })
 export class AddComponent implements OnInit {
   company: Company;
-  
-  constructor( private companyService: CompanyService ) { 
+  companyPage: CompanyPage;
+  message = '';
+  errMessage = '';
+
+  constructor(private companyService: CompanyService) {
     this.company = new Company();
-    this.companyService.getCompanyPage();
+    this.getCompanyPage();
   }
 
   ngOnInit() {
   }
-  get message(): string{
-    return this.companyService.getMessage();
-  }
-  get errMessage(): string{
-    return this.companyService.getErrorMessage();
+
+  getCompanyPage(page: number = null) {
+    this.companyService.getCompanyPage(page)
+      .subscribe(
+        data => this.companyPage = data,
+        error => this.errMessage = 'Company could not load' + error.status,
+    )
   }
 
-  get companyPage():CompanyPage{
-    return this.companyService.getCompanies();
+  onEdit($event: number) {
+    Object.assign(this.company, this.companyPage.content.find(p => p.id == $event));
   }
 
-  getCompanyPage(page: number = null){
-    console.log('Page',page);
-    this.companyService.getCompanyPage(page);
+  onDelete($event: number) {
+    this.companyService.deleteCompany($event)
+    .subscribe(
+      data => {
+        this.companyPage.content.splice(this.companyPage.content.findIndex(cus => cus.id == $event), 1);
+        this.message = 'Company deleted : ' + data.statusText;
+      },
+      error => this.errMessage = 'Could not delete company',
+    );
   }
 
-  onEdit($event: number){
-    this.company = this.companyService.getCompany($event);
+  onCompany($event: Company) {
+    if ($event.id == null || $event.id == 0) {
+      this.companyService.saveCompany($event)
+        .subscribe(
+          data => {
+            this.message = 'Company saved'
+            this.companyPage.content.push(data);
+          },
+          error => {
+            this.errMessage = 'Company saving filed';
+            console.log('Company saving failed ');
+          }
+        );
+    } else {
+      this.companyService.updateCompany($event)
+      .subscribe(
+        data => {
+          this.message = 'Company updated';
+          this.companyPage.content.splice(this.companyPage.content.findIndex(p => p.id == data.id),1, data);
+        },
+        error => this.errMessage = 'Company could not update ' + error.status,
+      );
+    }
   }
-  onDelete($event: number){
-    this.companyService.deleteCompany($event);
-  }
-  onCompany($event: Company){
-    this.companyService.saveCompany($event);
+
+  clear(){
+    this.message = '';
+    this.errMessage = '';
   }
 
 }
