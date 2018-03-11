@@ -1,3 +1,58 @@
-<p>
-  Dashboard index works!
-</p>
+<div class="container" style="min-height: calc(100vh - 144px);">
+    <div class="row my-2">
+        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+            <div class="info-box hover-expand-effect">
+                <div class="icon bg-deep-purple">
+                    <i class="fa fa-building"></i>
+                </div>
+                <div class="content">
+                    <div class="text">CLASSES</div>
+                    <div class="number">{{report?.classNumber}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+            <div class="info-box hover-expand-effect">
+                <div class="icon bg-green">
+                    <i class="fa fa-graduation-cap"></i>
+                </div>
+                <div class="content">
+                    <div class="text">STUDENTS</div>
+                    <div class="number">{{report?.studentNumber}} ({{report?.studentPercentage}}%)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+            <div class="info-box hover-expand-effect">
+                <div class="icon bg-teal">
+                    <i class="fa fa-envelope"></i>
+                </div>
+                <div class="content">
+                    <div class="text">SMS REMAIN</div>
+                    <div class="number">{{report?.smsRemain}}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row my-2">
+        <div class="col-12 col-md-6 px-3 ">
+            <table class="table table-bordered table-hover m-0 text-center rounded raised ">
+                <thead>
+                    <tr class="bg-light-green">
+                        <th>Class Name</th>
+                        <th>Number of Students</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let class of report?.classList">
+                        <td>{{class.message}}</td>
+                        <td>{{class.number}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

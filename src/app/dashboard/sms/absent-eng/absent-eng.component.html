@@ -1,83 +1,86 @@
 <div class="container mt-2">
   <div class="row">
-    <div class="col-12" *ngIf="message.length>0">
-      <div class="alert alert-primary" role="alert">
-        {{message}}
+    <div class="col-12 px-3">
+      <div class="alert alert-success" role="alert" *ngIf="message?.length>0">
+        <strong>{{message}}</strong>
         <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
       </div>
-    </div>
-
-    <div class="col-12" *ngIf="errorMessage.length>0">
-      <div class="alert alert-warning" role="alert">
-        {{errorMessage}}
+      <div class="alert alert-warning" role="alert" *ngIf="errMessage?.length>0">
+        <strong>{{errMessage}}</strong>
         <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
       </div>
-    </div>
-
-    <div class="col-12 col-md-6 raised">
-
-      <div class="form-group row mx-4">
-        <label class="col-sm-2 col-form-label">Class</label>
-        <div class="col-sm-10">
-          <select class="form-control" name="classId" #cl (change)="classChanged(cl.value)" [(ngModel)]="classId">
-            <option value="">Select a class</option>
-            <option *ngFor="let class of classList" [value]="class.id">{{class.className}}</option>
-          </select>
-        </div>
-      </div>
-
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>নাম</th>
-            <th>Phone</th>
-            <th>Select</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let student of studentList">
-            <td>{{student.studentId}}</td>
-            <td>{{student.name}}</td>
-            <td>{{student.nameBangla}}</td>
-            <td>{{student.phone}}</td>
-            <td>
-              <div class="material-switch pull-right">
-                <input type="checkbox" id="studentid{{student.id}}" (change)="studentSelected(student.id ,$event)" />
-                <label for="studentid{{student.id}}" class="bg-danger"></label>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
 
     <div class="col-12 col-md-6">
-      <div class="from-group">
-        <h3 class="text-center">ABSENT SMS</h3>
-      </div>
-      <table class="table raised">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Phone</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let student of absentStudentList">
-            <td>{{student.studentId}}</td>
-            <td>{{student.name}}</td>
-            <td>{{student.phone}}</td>
-          </tr>
-        </tbody>
-        <div class="form-group mx-3 pb-3">
-          <button type="submit" (click)="send()" class="btn btn-primary" [disabled]="absentStudentList.length < 1">
-            <i class="fa fa-paper-plane"></i>Send
-          </button>
+      <div class="raised">
+        <div class="from-group">
+          <h3 class="text-center">STUDENT LIST</h3>
         </div>
-      </table>
+        <div class="form-group row mx-2">
+          <label class="col-2 col-form-label">Class</label>
+          <div class="col-10">
+            <select class="form-control" name="classId" #cl (change)="classChanged(cl.value)" [(ngModel)]="classId">
+              <option value="">Select a class</option>
+              <option *ngFor="let class of classList" [value]="class.id">{{class.className}}</option>
+            </select>
+          </div>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>নাম</th>
+              <!-- <th>Phone</th> -->
+              <th>Select</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of studentList">
+              <td>{{student.studentId}}</td>
+              <td>{{student.name}}</td>
+              <td>{{student.nameBangla}}</td>
+              <!-- <td>{{student.phone}}</td> -->
+              <td>
+                <div class="material-switch pull-right">
+                  <input type="checkbox" id="studentid{{student.id}}" (change)="studentSelected(student.id ,$event)" />
+                  <label for="studentid{{student.id}}" class="bg-danger"></label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="raised">
+        <div class="from-group">
+          <h3 class="text-center">ABSENT SMS</h3>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <!-- <th>Phone</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of absentStudentList">
+              <td>{{student.studentId}}</td>
+              <td>{{student.name}}</td>
+              <!-- <td>{{student.phone}}</td> -->
+            </tr>
+          </tbody>
+          <div class="form-group mx-3 pb-3">
+            <button type="submit" (click)="send()" class="btn btn-primary" [disabled]="absentStudentList.length < 1">
+              <i class="fa fa-paper-plane"></i>Send
+            </button>
+          </div>
+        </table>
+      </div>
     </div>
   </div>
 </div>

@@ -1,52 +1,49 @@
 <div class="container mt-2">
   <div class="row">
-    <div class="col-12" *ngIf="message.length>0">
-      <div class="alert alert-primary" role="alert">
-        {{message}}
+    <div class="col-12 px-3">
+      <div class="alert alert-success" role="alert" *ngIf="message?.length>0">
+        <strong>{{message}}</strong>
         <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
       </div>
-    </div>
-
-    <div class="col-12" *ngIf="errorMessage.length>0">
-      <div class="alert alert-warning" role="alert">
-        {{errorMessage}}
+      <div class="alert alert-warning" role="alert" *ngIf="errMessage?.length>0">
+        <strong>{{errMessage}}</strong>
         <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
       </div>
     </div>
 
     <div class="col-12 col-md-6">
-
     </div>
 
     <div class="col-12 col-md-6">
+      <div class="raised">
+        <form [formGroup]="classStudentForm" (ngSubmit)="send()">
+          <div class="from-group px-2">
+            <h3 class="text-center">CLASS STUDENTS SMS</h3>
+          </div>
 
-      <form [formGroup]="classStudentForm" (ngSubmit)="send()">
-        <div class="from-group">
-          <h3 class="text-center">CLASS STUDENTS SMS</h3>
-        </div>
+          <div class="form-group px-2">
+            <label>Select your class</label>
+            <select class="form-control" name="classId" #class (change)="classChanged(class.value)" formControlName="classId" [(ngModel)]="generalSMS.number">
+              <option *ngFor="let class of classList" [value]="class.id">{{class.className}}</option>
+            </select>
+          </div>
 
-        <div class="form-group">
-          <label>Select your class</label>
-          <select class="form-control" name="classId" #class  (change)="classChanged(class.value)" formControlName="classId" [(ngModel)]="generalSMS.number">
-            <option *ngFor="let class of classList" [value]="class.id">{{class.className}}</option>
-          </select>
-        </div>
-        
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Type your message here</label>
-          <textarea class="form-control" rows="4" maxlength="160" #tmessage (keyup)="nameKeyup(tmessage.value)" [(ngModel)]="generalSMS.message"
-            formControlName="message">
+          <div class="form-group px-2">
+            <label for="exampleFormControlTextarea1">Type your message here</label>
+            <textarea class="form-control" rows="4" maxlength="160" #tmessage (keyup)="nameKeyup(tmessage.value)" [(ngModel)]="generalSMS.message"
+              formControlName="message">
           </textarea>
-          <small class="form-text pull-right">{{tmessage.value?.length}}/160</small>
-        </div>
+            <small class="form-text pull-right">{{tmessage.value?.length}}/160</small>
+          </div>
 
-        <div class="form-group">
+          <div class="form-group px-2 pb-2">
 
-          <button class="btn btn-primary" [disabled]="classStudentForm.invalid">
-            <i class="fa fa-paper-plane"></i>Send
-          </button>
-        </div>
-      </form>
+            <button class="btn btn-primary" [disabled]="classStudentForm.invalid">
+              <i class="fa fa-paper-plane"></i>Send
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

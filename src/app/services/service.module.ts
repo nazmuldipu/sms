@@ -7,6 +7,7 @@ import { CompanyService } from './company.service';
 import { ClassService } from './class.service';
 import { StudentService } from './student.service';
 import { SMSService } from './sms.service';
+import { ReportService } from './report.service';
 
 @NgModule({
     providers: [
@@ -17,7 +18,8 @@ import { SMSService } from './sms.service';
         CompanyService,
         ClassService,
         StudentService,
-        SMSService
+        SMSService,
+        ReportService
     ]
 
 })

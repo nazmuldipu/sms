@@ -1,59 +1,47 @@
 <div class="container mt-2">
   <div class="row">
-    <div class="col-12" *ngIf="message.length>0">
-      <div class="alert alert-primary" role="alert">
-        {{message}}
+    <div class="col-12 px-3">
+      <div class="alert alert-success" role="alert" *ngIf="message?.length>0">
+        <strong>{{message}}</strong>
         <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
       </div>
-    </div>
-
-    <div class="col-12" *ngIf="errorMessage.length>0">
-      <div class="alert alert-warning" role="alert">
-        {{errorMessage}}
+      <div class="alert alert-warning" role="alert" *ngIf="errMessage?.length>0">
+        <strong>{{errMessage}}</strong>
         <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
       </div>
     </div>
 
     <div class="col-12 col-md-6">
-
     </div>
 
     <div class="col-12 col-md-6">
-      
-      <form [formGroup]="manualSMSForm" (ngSubmit)="send()">
-        <div class="from-group">
-          <h3 class="text-center">ম্যানুয়াল বার্তা</h3>
-        </div>
+      <div class="raised">
+        <form [formGroup]="manualSMSForm" (ngSubmit)="send()">
+          <div class="from-group px-2">
+            <h3 class="text-center">ম্যানুয়াল বার্তা</h3>
+          </div>
 
-        <div class="form-group">
+          <div class="form-group px-2">
             <label for="manualsmsnumber">ফোন নাম্বার</label>
             <input class="form-control" formControlName="number" [(ngModel)]="generalSMS.number">
             <small class="text-danger" *ngIf="manualSMSForm.controls.number.errors?.required && manualSMSForm.controls.number.dirty ">Telephone Required</small>
             <small class="text-danger" *ngIf="manualSMSForm.controls.number.errors?.pattern && manualSMSForm.controls.number.dirty && !manualSMSForm.controls.number.errors?.required">Invaild (use +8801882332428 pattern)</small>
+          </div>
 
-        </div>
-
-        <div class="form-group">
-          <label for="manualsmsmessage">এখানে আপনার বার্তা লিখুন</label>
-          <textarea 
-            class="form-control" 
-            id = "manualsmsmessage"
-            rows="4" 
-            maxlength="70"
-            #tmessage
-            [(ngModel)]="generalSMS.message" 
-            formControlName="message">
+          <div class="form-group px-2">
+            <label for="manualsmsmessage">এখানে আপনার বার্তা লিখুন</label>
+            <textarea class="form-control" id="manualsmsmessage" rows="4" maxlength="70" #tmessage [(ngModel)]="generalSMS.message" formControlName="message">
           </textarea>
-          <small class="form-text pull-right">{{tmessage.value?.length}}/70</small>
-        </div>
+            <small class="form-text pull-right">{{tmessage.value?.length}}/70</small>
+          </div>
 
-        <div class="form-group">
-
-          <button class="btn btn-primary" [disabled]="manualSMSForm.invalid">
-            <i class="fa fa-paper-plane"></i>পাঠান
-          </button>
-        </div>
-      </form>
+          <div class="form-group px-2 pb-2">
+            <button class="btn btn-primary" [disabled]="manualSMSForm.invalid">
+              <i class="fa fa-paper-plane"></i>পাঠান
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

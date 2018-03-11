@@ -154,6 +154,7 @@ export class StudentsComponent implements OnInit {
 
   saveStudent() {
     if (this.studentForm.valid) {
+      this.student.phone = this.student.phone.replace(/\s/g,'');
       if (!this.edit) {// saving mode
         this.studentService.saveStudent(this.classId, this.student)
           .subscribe(

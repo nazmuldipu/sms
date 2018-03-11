@@ -1,68 +1,86 @@
 <div class="container mt-2">
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 px-3">
       <div class="alert alert-success" role="alert" *ngIf="message?.length>0">
-          <strong>{{message}}</strong>
+        <strong>{{message}}</strong>
+        <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="errMessage?.length>0">
-          <strong>{{errMessage}}</strong>
+        <strong>{{errMessage}}</strong>
+        <a class="btn btn-warning btn-sm" (click)="clear()">Clear</a>
       </div>
     </div>
-    <div class="col-12 col-md-7 raised">
-      <div class="form-group row mx-4" *ngIf="hasRole('ADMIN')">
-        <select class="form-control" #t  (change)="companyChanged(t.value)">
+
+
+    <div class="col-12 col-md-7">
+      <div class="raised">
+        <div class="from-group">
+          <h3 class="text-center">CLASS LIST</h3>
+        </div>
+
+        <div class="form-group row mx-4" *ngIf="hasRole('ADMIN')">
+          <select class="form-control" #t (change)="companyChanged(t.value)">
             <option *ngFor="let company of companyList" [value]="company.id">{{company.companyName}}</option>
-        </select>
-      </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Class Id</th>
-            <th>Class Name</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let class of classPage?.content">
-            <td>{{class.classId}}</td>
-            <td>{{class.className}}</td>
-            <td>
-              <button class="btn btn-warning btn-sm raised" 
-                  (click)="editClass(class.id)">
-                  <i class="fa fa-pencil-square-o"></i> 
-              </button> 
-              <button class="btn btn-danger btn-sm raised" 
-                  (click)="deleteClass(class.id)">
-                  <i class="fa fa-trash-o"></i> 
-              </button> 
-            </td>
-          </tr>
-          <tr *ngFor="let i of arr(10 - classPage?.numberOfElements)" >
-              <td colspan="5">
-                  <a class="btn btn-sm">
-                      &nbsp;
-                  </a> 
+          </select>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Class Id</th>
+              <th>Class Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let class of classPage?.content">
+              <td>{{class.classId}}</td>
+              <td>{{class.className}}</td>
+              <td>
+                <button class="btn btn-warning btn-sm raised" (click)="editClass(class.id)">
+                  <i class="fa fa-pencil-square-o"></i>
+                </button>
+                <button class="btn btn-danger btn-sm raised" (click)="deleteClass(class.id)">
+                  <i class="fa fa-trash-o"></i>
+                </button>
               </td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="3">
-              <div aria-label="Page navigation example">
-                <ul class="pagination justify-content-end m-0">
-                  <li class="page-item" [ngClass]="{'disabled': classPage?.first}" ><a class="page-link" [routerLink] (click)="getClassPage(0)" > First </a></li>
-                  <li class="page-item" [ngClass]="{'disabled': classPage?.number == 0}" ><a class="page-link" [routerLink] (click)="getClassPage(classPage?.number-1)" > Previous </a></li>
-  
-                  <li class="page-item"><a class="page-link" > {{classPage?.number+1}} / {{classPage?.totalPages}} </a></li>
-  
-                  <li class="page-item" [ngClass]="{'disabled': classPage?.last}"><a class="page-link" [routerLink] (click)="getClassPage(classPage?.number+1)"> Next </a></li>
-                  <li class="page-item" [ngClass]="{'disabled': classPage?.last}"><a class="page-link" [routerLink] (click)="getClassPage(classPage?.totalPages-1)"> Last </a></li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+            </tr>
+            <tr *ngFor="let i of arr(10 - classPage?.numberOfElements)">
+              <td colspan="5">
+                <a class="btn btn-sm">
+                  &nbsp;
+                </a>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3">
+                <div aria-label="Page navigation example">
+                  <ul class="pagination justify-content-end m-0">
+                    <li class="page-item" [ngClass]="{'disabled': classPage?.first}">
+                      <a class="page-link" [routerLink] (click)="getClassPage(0)"> First </a>
+                    </li>
+                    <li class="page-item" [ngClass]="{'disabled': classPage?.number == 0}">
+                      <a class="page-link" [routerLink] (click)="getClassPage(classPage?.number-1)"> Previous </a>
+                    </li>
+
+                    <li class="page-item">
+                      <a class="page-link"> {{classPage?.number+1}} / {{classPage?.totalPages}} </a>
+                    </li>
+
+                    <li class="page-item" [ngClass]="{'disabled': classPage?.last}">
+                      <a class="page-link" [routerLink] (click)="getClassPage(classPage?.number+1)"> Next </a>
+                    </li>
+                    <li class="page-item" [ngClass]="{'disabled': classPage?.last}">
+                      <a class="page-link" [routerLink] (click)="getClassPage(classPage?.totalPages-1)"> Last </a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
 
 
@@ -89,7 +107,7 @@
             <input type="text" class="form-control" placeholder="Class Name" [(ngModel)]="class.className" formControlName="className">
             <small class="text-danger" *ngIf="classForm.controls.className.errors?.required && classForm.controls.className.dirty">Class name Required</small>
           </div>
-          
+
           <div class="form-group mx-3 pb-3">
             <button type="button" class="btn btn-danger" (click)="clear()">Clear</button>
             <button type="submit" class="btn" [ngClass]="edit?'btn-warning':'btn-primary'" [disabled]="this.classForm.invalid">{{edit?'Update':'Save'}}</button>
@@ -99,4 +117,3 @@
     </div>
   </div>
 </div>
-  

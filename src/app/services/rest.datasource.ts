@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
 
 const PROTOCOL = 'http';
 const PORT = 8000;
-const SERVER = 'localhost';
-// const SERVER = '192.168.31.6';
+// const SERVER = 'localhost';
+const SERVER = '192.168.31.6';
 // const SERVER = '172.104.166.238';
 // const SERVER = '192.168.0.104';
 // const SERVER = '172.104.173.180';

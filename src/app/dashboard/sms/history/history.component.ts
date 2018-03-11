@@ -23,7 +23,7 @@ export class HistoryComponent implements OnInit {
     this.smsService.getHistory(page)
       .subscribe(
         data => this.smsPage = data,
-        error => this.errorMessage = error;
+        error => this.errorMessage = error
       )
   }
 
