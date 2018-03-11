@@ -74,6 +74,8 @@ export class AddComponent implements OnInit {
   clear(){
     this.message = '';
     this.errMessage = '';
+    this.company = new Company();
+    
   }
 
 }

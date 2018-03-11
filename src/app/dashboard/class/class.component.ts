@@ -33,15 +33,15 @@ export class ClassComponent implements OnInit {
     this.class = new Class();
     this.companyId = +localStorage.getItem('companyId');
     this.createForm();
-    this.classService.clear();
-
-    this.getCompanyList();
-    if (this.companyId > 0) {
-      this.getClassPage();
-    }
   }
 
   ngOnInit() {
+    //Company List
+    if (this.companyId == null || this.companyId < 1 || this.hasRole('ADMIN')) {
+      this.getCompanyList();
+    } else {
+      this.getClassPage();
+    }
   }
 
   hasRole(role: string): boolean {
@@ -71,10 +71,15 @@ export class ClassComponent implements OnInit {
         data => {
           this.companyList = data;
           if (data.length == 1) {
-            this.companyId = data[0].id;
+            if (this.companyId == null) {
+              this.companyId = data[0].id;
+              this.getClassPage();
+            } else {
+              this.companyId = data[0].id;
+            }
             this.classForm.controls.companyId.setValue(this.companyId);
             localStorage.setItem('companyId', this.companyId + '');
-            // this.getClassPage(this.companyId);
+            this.getClassPage();
           }
         }
       )
@@ -99,13 +104,13 @@ export class ClassComponent implements OnInit {
         )
       } else {
         this.classService.updateClss(this.class, this.companyId)
-        .subscribe(
-          data => {
-            this.classPage.content.splice(this.classPage.content.findIndex(p => p.id == data.id), 1, data);
-            this.message = 'Class Updated';
-          },
-          error => this.errMessage = 'Error! Clas could not update,' + error.status,
-      )
+          .subscribe(
+            data => {
+              this.classPage.content.splice(this.classPage.content.findIndex(p => p.id == data.id), 1, data);
+              this.message = 'Class Updated';
+            },
+            error => this.errMessage = 'Error! Clas could not update,' + error.status,
+        )
       }
       this.class = new Class();
       this.createForm();
@@ -122,13 +127,13 @@ export class ClassComponent implements OnInit {
   deleteClass(id: number) {
     if (confirm('Are you sure to delete')) {
       this.classService.deleteClass(id)
-      .subscribe(
-        data => {
-          this.classPage.content.splice(this.classPage.content.findIndex(cus => cus.id == id), 1);
-          this.message = 'Role deleted : ' + data.statusText;
-        },
-        error => this.errMessage = 'Role could not delete :' + error.status,
-    )
+        .subscribe(
+          data => {
+            this.classPage.content.splice(this.classPage.content.findIndex(cus => cus.id == id), 1);
+            this.message = 'Role deleted : ' + data.statusText;
+          },
+          error => this.errMessage = 'Role could not delete :' + error.status,
+      )
     }
   }
 
